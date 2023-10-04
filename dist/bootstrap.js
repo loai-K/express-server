@@ -27,8 +27,11 @@ exports.lifecycle = {
     init: async () => {
         if (running) {
             await (0, app_info_1.default)();
-            console.log('running', running);
         }
+    },
+    exit: async () => {
+        process.exitCode = 128;
+        process.exit(0);
     },
 };
 exports.default = exports.lifecycle;

@@ -36,14 +36,6 @@ const config_1 = require("./config");
 const bootstrap_1 = require("./bootstrap");
 const routes_1 = __importDefault(require("./routes"));
 const error_middleware_1 = __importDefault(require("./middlewares/error.middleware"));
-const exit = () => {
-    process.exitCode = 1;
-    server.close(async () => {
-        server.closeAllConnections();
-        await bootstrap_1.lifecycle.close();
-    });
-    process.exit;
-};
 const app = (0, express_1.default)()
     .disable('x-powered-by')
     .use(express_1.default.json())
@@ -64,7 +56,16 @@ app.use(error_middleware_1.default).use((_req, res) => {
 const server = app.listen(config_1.appConfig.port, () => {
     bootstrap_1.lifecycle.init().then();
 });
+const exit = () => {
+    process.exitCode = 128;
+    server.close(async () => {
+        server.closeAllConnections();
+        await bootstrap_1.lifecycle.close();
+    });
+};
 process
+    .on('SIGQUIT', exit)
+    .on('SIGTSTP', exit)
     .on('SIGTERM', exit)
     .on('SIGINT', exit)
     .on('uncaughtException', exit)

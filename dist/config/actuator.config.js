@@ -11,7 +11,18 @@ const actuatorOptions = {
     infoGitMode: 'full',
     infoDateFormat: 'DD-MM-YYYY hh:mm:ss A',
     infoBuildOptions: {
-        data: controllers_1.appData,
+        'server': {
+            'health': process.connected,
+            'path': process.title,
+            'platform': process.platform,
+            'node': process.version,
+            'pid': process.pid,
+            'uptime': process.uptime()
+        },
+        'resource': {
+            'cpuUsage': process.cpuUsage(),
+            'memory': process.memoryUsage(),
+        },
     },
     customEndpoints: [
         {

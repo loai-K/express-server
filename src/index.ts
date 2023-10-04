@@ -49,10 +49,11 @@ const server = app.listen(appConfig.port, () => {
 
 // Ensure signal/process events are lifecycle-managed.
 const exit = () => {
+	process.exitCode = 128
 	server.close(async () => {
 		server.closeAllConnections()
 		await lifecycle.close()
-		await lifecycle.exit()
+		// await lifecycle.exit()
 	})
 }
 
