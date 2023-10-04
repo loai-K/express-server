@@ -5,7 +5,7 @@ const request = supertest(app)
 
 describe('TEST: Server Running', () => {
 	it('should return Response with status 200', async () => {
-		const response = await request.get('/')
+		const response = await request.get('/api')
 		expect(response.status).toBe(200)
 	})
 
@@ -15,7 +15,7 @@ describe('TEST: Server Running', () => {
 	})
 
 	it('should return Response and have some headers', async () => {
-		const response = await request.get('/')
+		const response = await request.get('/api')
 
 		expect(response.get('x-powered-by')).toBeUndefined()
 		expect(response.get('Content-Security-Policy')).toBeDefined()

@@ -8,7 +8,7 @@ const index_1 = __importDefault(require("../index"));
 const request = (0, supertest_1.default)(index_1.default);
 describe('TEST: Server Running', () => {
     it('should return Response with status 200', async () => {
-        const response = await request.get('/');
+        const response = await request.get('/api');
         expect(response.status).toBe(200);
     });
     it('should return Response with status 404', async () => {
@@ -16,7 +16,7 @@ describe('TEST: Server Running', () => {
         expect(response.status).toBe(404);
     });
     it('should return Response and have some headers', async () => {
-        const response = await request.get('/');
+        const response = await request.get('/api');
         expect(response.get('x-powered-by')).toBeUndefined();
         expect(response.get('Content-Security-Policy')).toBeDefined();
         expect(response.get('Content-Type')).toBe('application/json; charset=utf-8');

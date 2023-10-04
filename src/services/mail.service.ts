@@ -1,7 +1,6 @@
 import nodemailer, { Transporter, createTestAccount } from 'nodemailer'
 import { Mail } from '../interfaces'
-import mailConfig from '../config/mailConfig'
-import appConfig from '../config/dotenvConfig'
+import { appConfig, mailConfig } from '../config'
 
 export default class MailService {
 	private static instance: MailService

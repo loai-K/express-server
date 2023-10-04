@@ -6,6 +6,7 @@ function ApiMiddleware(api_version: string = 'v1') {
 		response.setHeader('Accept-Language', 'ar;q=1, en;q=0.8')
 		response.setHeader('Content-Type', 'application/json; charset=utf-8')
 		response.setHeader('X-XSS-Protection', '1; mode=block')
+		response.setHeader('Cache-Control', 'no-cache')
 
 		next()
 	}

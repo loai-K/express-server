@@ -2,7 +2,7 @@
 // import SMTPConnection from 'nodemailer/lib/smtp-connection'
 import appConfig from './dotenvConfig'
 
-const mailConfig: object = {
+export const mailConfig: object = {
 	host: appConfig.email.host,
 	port: appConfig.email.port || 587,
 	secure: true, // use TLS
@@ -20,8 +20,8 @@ const mailConfig: object = {
 	logger: false,
 }
 
-// export const poolConfig = `smtps://${appConfig.email.user}:${appConfig.email.password}@${appConfig.email.host}/?pool=true`
-// export const SmtpConnection: SMTPConnection = new SMTPConnection(mailConfig)
+export const poolConfig = `smtps://${appConfig.email.user}:${appConfig.email.password}@${appConfig.email.host}/?pool=true`
+// export const SmtpConnection: SMTPConnection = new SMTPConnection(poolConfig)
 // export const MailerTransporter: Transporter = nodemailer.createTransport(poolConfig)
 
 export default mailConfig

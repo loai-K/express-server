@@ -9,8 +9,12 @@ function appData() {
     return application_json_1.default;
 }
 exports.appData = appData;
-async function mainData() {
-    return application_json_1.default;
+async function mainData(_req, res) {
+    return res.json({
+        status: 'success',
+        message: 'app info',
+        body: application_json_1.default,
+    });
 }
 exports.mainData = mainData;
 //# sourceMappingURL=main.controller.js.map

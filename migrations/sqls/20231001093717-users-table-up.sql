@@ -1,10 +1,13 @@
 -- create users table
 -- CREATE SEQUENCE IF NOT EXISTS users.users_seq START WITH 1 INCREMENT BY 1 NOCACHE;
 -- CREATE SEQUENCE IF NOT EXISTS users.users_seq START WITH 1 INCREMENT BY 1;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
 CREATE TABLE IF NOT EXISTS users (
 --     id SERIAL PRIMARY KEY,
-    id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+--     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     first_name varchar(50),
     last_name varchar(50) NOT NULL,
     user_name varchar(50) UNIQUE NOT NULL,

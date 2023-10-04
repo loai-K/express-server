@@ -22,13 +22,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importStar(require("nodemailer"));
-const mailConfig_1 = __importDefault(require("../config/mailConfig"));
-const dotenvConfig_1 = __importDefault(require("../config/dotenvConfig"));
+const config_1 = require("../config");
 class MailService {
     static instance;
     transporter;
@@ -52,12 +48,12 @@ class MailService {
         });
     }
     async createConnection() {
-        this.transporter = nodemailer_1.default.createTransport(mailConfig_1.default);
+        this.transporter = nodemailer_1.default.createTransport(config_1.mailConfig);
     }
     async sendMail(requestId, options) {
         return await this.transporter
             ?.sendMail({
-            from: `"${dotenvConfig_1.default.email.name}" ${dotenvConfig_1.default.email.from || options.from}`,
+            from: `"${config_1.appConfig.email.name}" ${config_1.appConfig.email.from || options.from}`,
             to: options.to,
             cc: options.cc,
             bcc: options.bcc,

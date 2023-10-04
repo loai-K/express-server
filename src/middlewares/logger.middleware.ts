@@ -5,7 +5,7 @@ const loggerMiddleware = (
 	_response: Response,
 	next: NextFunction,
 ) => {
-	console.log(
+	console.error(
 		'Log::',
 		'Method: ' + request.method,
 		'Route: ' + request.path,

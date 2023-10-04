@@ -29,28 +29,46 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = __importStar(require("path"));
 const express_1 = __importDefault(require("express"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const compression_1 = __importDefault(require("compression"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const config_1 = require("./config");
+const bootstrap_1 = require("./bootstrap");
 const routes_1 = __importDefault(require("./routes"));
 const error_middleware_1 = __importDefault(require("./middlewares/error.middleware"));
-const app = (0, express_1.default)();
-app.disable('x-powered-by');
-app.use(express_1.default.json());
-app.use((0, cookie_parser_1.default)(config_1.appConfig.cookieSecret));
-app.use((0, cors_1.default)(config_1.corsOptions));
-app.use((0, helmet_1.default)());
-app.use(config_1.apiLimiter);
-app.use(express_1.default.static(path.join(__dirname, 'public')));
+const exit = () => {
+    process.exitCode = 1;
+    server.close(async () => {
+        server.closeAllConnections();
+        await bootstrap_1.lifecycle.close();
+    });
+    process.exit;
+};
+const app = (0, express_1.default)()
+    .disable('x-powered-by')
+    .use(express_1.default.json())
+    .use('/', express_1.default.static(path.join(__dirname, 'public')))
+    .use('/static', express_1.default.static(path.join(__dirname, 'uploads')))
+    .use((0, cookie_parser_1.default)(config_1.appConfig.cookieSecret))
+    .use((0, compression_1.default)())
+    .use((0, cors_1.default)(config_1.corsOptions))
+    .use((0, helmet_1.default)())
+    .use('/api', config_1.actuatorApp)
+    .use('/api', config_1.apiLimiter);
 (0, routes_1.default)(app);
-app.use(error_middleware_1.default);
-app.use((_req, res) => {
+app.use(error_middleware_1.default).use((_req, res) => {
     return res.status(404).json({
         message: 'not found',
     });
 });
-const server = app.listen(config_1.appConfig.port);
-process.on('SIGINT', () => server.close());
-process.on('SIGTERM', () => server.close());
-exports.default = app;
+const server = app.listen(config_1.appConfig.port, () => {
+    bootstrap_1.lifecycle.init().then();
+});
+process
+    .on('SIGTERM', exit)
+    .on('SIGINT', exit)
+    .on('uncaughtException', exit)
+    .on('unhandledRejection', exit);
+bootstrap_1.lifecycle.on('close', exit);
+exports.default = server;
 //# sourceMappingURL=index.js.map

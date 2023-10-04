@@ -1,4 +1,5 @@
 -- create otp table
+-- CREATE SEQUENCE IF NOT EXISTS otp.otp_seq START WITH 1 INCREMENT BY 1;
 CREATE TYPE valid_otp_type AS ENUM ('check', 'forget', 'verification');
 
 CREATE TABLE IF NOT EXISTS otp (

@@ -1,9 +1,11 @@
 import * as path from 'path'
 import express, { Application, Request, Response } from 'express'
 import cookieParser from 'cookie-parser'
+import compression from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
-import { appConfig, corsOptions, apiLimiter } from './config'
+import { appConfig, corsOptions, apiLimiter, actuatorApp } from './config'
+import { lifecycle } from './bootstrap'
 import mountRoutes from './routes'
 import errorMiddleware from './middlewares/error.middleware'
 // import Logger from './middlewares/logger.middleware'
@@ -11,37 +13,58 @@ import errorMiddleware from './middlewares/error.middleware'
 
 // app instance
 const app: Application = express()
+	.disable('x-powered-by')
+	.use(express.json())
+	.use('/', express.static(path.join(__dirname, 'public')))
+	.use('/static', express.static(path.join(__dirname, 'uploads')))
+	.use(cookieParser(appConfig.cookieSecret))
+	.use(compression())
+	.use(cors(corsOptions))
+	.use(helmet())
+	.use('/api', actuatorApp)
+	.use('/api', apiLimiter)
 
-// app middlewares
-app.disable('x-powered-by')
-app.use(express.json())
-app.use(cookieParser(appConfig.cookieSecret))
-app.use(cors(corsOptions))
-app.use(helmet())
 //// logging requests
 // app.use(morgan('common'))
 // app.use(Logger)
-// Apply the rate limiting middleware to all requests
-// app.all('/api', apiLimiter)
-app.use(apiLimiter)
-
-app.use(express.static(path.join(__dirname, 'public')))
 
 // app routes
 mountRoutes(app)
 
 // error handling
-app.use(errorMiddleware)
-app.use((_req: Request, res: Response) => {
+app.use(errorMiddleware).use((_req: Request, res: Response) => {
 	return res.status(404).json({
 		message: 'not found',
 	})
 })
 
-const server = app.listen(appConfig.port)
+const server = app.listen(appConfig.port, () => {
+	lifecycle.init().then()
+})
 
-// app.on('listening', function () {})
-process.on('SIGINT', () => server.close())
-process.on('SIGTERM', () => server.close())
+// // in case server error happened
+// server.on('error', (error) => {
+// 	new Error(error.message)
+// })
 
-export default app
+// Ensure signal/process events are lifecycle-managed.
+const exit = () => {
+	server.close(async () => {
+		server.closeAllConnections()
+		await lifecycle.close()
+		await lifecycle.exit()
+	})
+}
+
+process
+	.on('SIGQUIT', exit)
+	.on('SIGTSTP', exit)
+	.on('SIGTERM', exit)
+	.on('SIGINT', exit)
+	.on('uncaughtException', exit)
+	.on('unhandledRejection', exit)
+
+// This prevents close connection.
+lifecycle.on('close', exit)
+
+export default server
