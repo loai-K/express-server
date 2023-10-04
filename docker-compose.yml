@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  app:
+    container_name: app
+    restart: always
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+      - express-network
+    depends_on:
+      - db
+    volumes:
+      - app-volume:/usr/src/app
+  db:
+    container_name: postgres
+    image: postgres:alpine
+    restart: always
+    ports:
+      - '${PG_PORT}:${PG_PORT}'
+    networks:
+      - express-network
+    volumes:
+      - app-data:/data/db
+    environment:
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PASSWORD}
+      - POSTGRES_DB=${PG_DATABASE}
+  adminer:
+    container_name: adminer
+    image: adminer:latest
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - express-network
+    environment:
+      - ADMINER_DEFAULT_DB_DRIVER=PostgreSQL
+      - ADMINER_DEFAULT_DB_HOST=${PG_HOST}
+      - ADMINER_DEFAULT_DB_NAME=${PG_DATABASE}
+      - ADMINER_DEFAULT_DB_USER=${PG_USER}
+      - ADMINER_DEFAULT_DB_PASSWORD=${PG_PASSWORD}
+networks:
+  express-network:
+    driver: bridge
+volumes:
+  app-volume:
+  app-data: {}

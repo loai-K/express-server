@@ -1,0 +1,1 @@
+{"version":3,"file":"rateLimitConfig.js","sourceRoot":"","sources":["../../src/config/rateLimitConfig.ts"],"names":[],"mappings":";;;AAAA,2DAAuE;AAE1D,QAAA,UAAU,GAA4B,IAAA,8BAAS,EAAC;IAC5D,QAAQ,EAAE,EAAE,GAAG,EAAE,GAAG,IAAI;IACxB,KAAK,EAAE,GAAG;IACV,eAAe,EAAE,SAAS;IAC1B,aAAa,EAAE,KAAK;IACpB,OAAO,EAAE,mBAAmB;CAE5B,CAAC,CAAA;AAEF,kBAAe,kBAAU,CAAA"}

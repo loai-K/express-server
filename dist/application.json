@@ -1,0 +1,1 @@
+{ "health": true, "name": "express-app", "version": "1.0.0", "description": "Express Application", "keywords": ["node", "express", "typescript", "postgres", "jasmine", "application", "proxy", "docker"], "author": { "name": "Loai Kanou", "bio": "Full Stack Developer", "url": "https://github.com/loai-K" } }
