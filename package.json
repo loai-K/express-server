@@ -11,12 +11,17 @@
     "proxy",
     "docker"
   ],
-  "description": "Express Application",
+  "description": "Rest API using Node.js, TypeScript, Express",
   "author": {
     "name": "Loai Kanou",
     "email": "loai.net@gmail.com",
     "url": "https://github.com/loai-k"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loai-K/express-server.git"
+  },
+  "homepage": "https://github.com/loai-K/express-server#readme",
   "license": "UNLICENSED",
   "private": true,
   "type": "commonjs",
