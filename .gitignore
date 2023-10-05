@@ -16,3 +16,7 @@ coverage
 # environment
 .env
 report.**.json
+info.log
+error.log
+combined.log
+**.log

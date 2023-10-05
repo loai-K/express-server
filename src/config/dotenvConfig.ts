@@ -7,6 +7,7 @@ export const appConfig = {
 	port: parseInt(process.env.PORT as string, 10) || 3000,
 	path: process.env.PATH || 'http://localhost',
 	environment: process.env.NODE_ENV || 'production',
+	logState: process.env.LOG_STATE || false,
 	cookieSecret: process.env.COOKIE_SECRET,
 	bcryptHash: process.env.BCRYPT_HASH,
 	saltRounds: parseInt(process.env.SALT_ROUNDS as string, 10) || 10,
