@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
+import Logger from '../helpers/logger'
 
 const loggerMiddleware = (
 	request: Request,
@@ -11,6 +12,10 @@ const loggerMiddleware = (
 		'Route: ' + request.path,
 		'IP: ' + request.ip,
 		'Time: ' + Date.now(),
+	)
+
+	Logger.info(
+		`Log:: Method: ${request.method}, Route: ${request.path}, IP: ${request.ip}, Time: ${Date.now()}`
 	)
 
 	next()
