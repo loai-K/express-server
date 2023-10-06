@@ -1,4 +1,5 @@
 /// <reference types="node" />
-declare const server: import("http").Server<typeof import("http").IncomingMessage, typeof import("http").ServerResponse>;
+import http from 'http';
+declare const server: http.Server<typeof http.IncomingMessage, typeof http.ServerResponse>;
 export default server;
 //# sourceMappingURL=index.d.ts.map

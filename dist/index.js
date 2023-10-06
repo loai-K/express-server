@@ -26,17 +26,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const path = __importStar(require("path"));
+const http_1 = __importDefault(require("http"));
 const express_1 = __importDefault(require("express"));
+const path = __importStar(require("path"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const compression_1 = __importDefault(require("compression"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const config_1 = require("./config");
 const bootstrap_1 = require("./bootstrap");
+const ws_1 = __importDefault(require("./routes/ws"));
 const routes_1 = __importDefault(require("./routes"));
 const error_middleware_1 = __importDefault(require("./middlewares/error.middleware"));
-const app = (0, express_1.default)()
+const logger_1 = __importDefault(require("./helpers/logger"));
+const app = (0, express_1.default)();
+const server = http_1.default.createServer(app);
+(0, ws_1.default)(server);
+app
     .disable('x-powered-by')
     .use(express_1.default.json())
     .use('/', express_1.default.static(path.join(__dirname, 'public')))
@@ -53,8 +59,11 @@ app.use(error_middleware_1.default).use((_req, res) => {
         message: 'not found',
     });
 });
-const server = app.listen(config_1.appConfig.port, () => {
+server.listen(config_1.appConfig.port, () => {
     bootstrap_1.lifecycle.init().then();
+});
+server.on('error', (error) => {
+    logger_1.default.error(error.message);
 });
 const exit = () => {
     process.exitCode = 128;

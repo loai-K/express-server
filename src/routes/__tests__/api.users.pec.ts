@@ -18,9 +18,11 @@ describe('TEST: User API Endpoints', () => {
 		password: 'secret',
 	} as User
 
-	beforeAll(async () => {
+	beforeAll(async (done) => {
 		const createdUser = await userModel.create(user)
 		user.id = createdUser.id
+
+		done()
 	})
 
 	afterAll(async () => {

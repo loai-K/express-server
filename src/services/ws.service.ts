@@ -1,4 +1,4 @@
-import WebSocket, { WebSocketServer } from 'ws'
+import WebSocket, { WebSocketServer, ServerOptions } from 'ws'
 
 export const wsServer = new WebSocketServer({
 	port: 8080,
@@ -21,9 +21,9 @@ export const wsServer = new WebSocketServer({
 		threshold: 1024, // Size (in bytes) below which messages
 		// should not be compressed if context takeover is disabled.
 	},
-})
+} as ServerOptions)
 
-export function ws(path_uri: string) {
+export function webSocket(path_uri: string) {
 	return new WebSocket(path_uri, {
 		perMessageDeflate: false,
 	})

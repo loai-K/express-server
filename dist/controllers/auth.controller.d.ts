@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { AppRequest } from '../interfaces';
+import AppRequest from '../interfaces/appRequest';
 declare function authUser(req: AppRequest, res: Response, next: NextFunction): Promise<void | Response<any, Record<string, any>>>;
 declare function login(req: Request, res: Response, next: NextFunction): Promise<void | Response<any, Record<string, any>>>;
 declare function logout(req: Request, res: Response, next: NextFunction): Promise<void>;

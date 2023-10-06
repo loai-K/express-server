@@ -7,7 +7,7 @@ const user_model_1 = __importDefault(require("../models/user.model"));
 const userModel = new user_model_1.default();
 async function authUser(req, res, next) {
     try {
-        if (req.user) {
+        if (req.user?.id) {
             const user = await userModel.find(req.user.id);
             return res.json({
                 status: 'success',

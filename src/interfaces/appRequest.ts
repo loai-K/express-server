@@ -1,8 +1,7 @@
 import { Request } from 'express'
-import { JwtPayload } from 'jsonwebtoken'
 
 export interface AppRequest extends Request {
-	user?: { id?: string; role?: string } | JwtPayload
+	user?: { id?: string; role?: string }
 	locale?: string
 }
 

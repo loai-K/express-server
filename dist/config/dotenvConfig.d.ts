@@ -4,6 +4,7 @@ export declare const appConfig: {
     port: number;
     path: string;
     environment: string;
+    logState: string | boolean;
     cookieSecret: string | undefined;
     bcryptHash: string | undefined;
     saltRounds: number;

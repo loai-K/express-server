@@ -1,18 +1,24 @@
-import * as path from 'path'
+import http from 'http'
 import express, { Application, Request, Response } from 'express'
+import * as path from 'path'
 import cookieParser from 'cookie-parser'
 import compression from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
 import { appConfig, corsOptions, apiLimiter, actuatorApp } from './config'
 import { lifecycle } from './bootstrap'
+import webSocket from './routes/ws'
 import mountRoutes from './routes'
 import errorMiddleware from './middlewares/error.middleware'
-// import Logger from './middlewares/logger.middleware'
-// import morgan from 'morgan'
+import Logger from './helpers/logger'
 
 // app instance
 const app: Application = express()
+const server = http.createServer(app)
+webSocket(server)
+
+// app middlewares and configuration
+app
 	.disable('x-powered-by')
 	.use(express.json())
 	.use('/', express.static(path.join(__dirname, 'public')))
@@ -26,7 +32,6 @@ const app: Application = express()
 
 //// logging requests
 // app.use(morgan('common'))
-// app.use(Logger)
 
 // app routes
 mountRoutes(app)
@@ -38,14 +43,14 @@ app.use(errorMiddleware).use((_req: Request, res: Response) => {
 	})
 })
 
-const server = app.listen(appConfig.port, () => {
+server.listen(appConfig.port, () => {
 	lifecycle.init().then()
 })
 
-// // in case server error happened
-// server.on('error', (error) => {
-// 	new Error(error.message)
-// })
+// in case server error happened
+server.on('error', (error) => {
+	Logger.error(error.message)
+})
 
 // Ensure signal/process events are lifecycle-managed.
 const exit = () => {

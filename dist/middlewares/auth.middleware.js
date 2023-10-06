@@ -27,8 +27,7 @@ function AuthMiddleware(req, _res, next) {
             subject: 'authToken',
         });
         if (decoded) {
-            ;
-            req.user = { decoded };
+            req.user = { id: decoded.toString() };
             next();
         }
         else {

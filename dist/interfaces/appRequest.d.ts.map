@@ -1,0 +1,1 @@
+{"version":3,"file":"appRequest.d.ts","sourceRoot":"","sources":["../../src/interfaces/appRequest.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,MAAM,SAAS,CAAA;AAEjC,MAAM,WAAW,UAAW,SAAQ,OAAO;IAC1C,IAAI,CAAC,EAAE;QAAE,EAAE,CAAC,EAAE,MAAM,CAAC;QAAC,IAAI,CAAC,EAAE,MAAM,CAAA;KAAE,CAAA;IACrC,MAAM,CAAC,EAAE,MAAM,CAAA;CACf;AAED,eAAe,UAAU,CAAA"}

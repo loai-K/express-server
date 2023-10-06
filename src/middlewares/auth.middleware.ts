@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express'
+import { Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import appConfig from '../config/dotenvConfig'
-import Error from '../interfaces/error.interface'
-import { AppRequest } from 'interfaces'
+import { AppRequest, Error } from 'interfaces'
+import { payloadType } from '../types'
 
 const handleUnauthorizedError = (next: NextFunction) => {
 	const error: Error = new Error('Authentication Error, Please login again')
@@ -10,7 +10,7 @@ const handleUnauthorizedError = (next: NextFunction) => {
 	next(error)
 }
 
-function AuthMiddleware(req: Request, _res: Response, next: NextFunction) {
+function AuthMiddleware(req: AppRequest, _res: Response, next: NextFunction) {
 	try {
 		// const authHeader = req.headers['Authorization']
 		const authHeader = req.get('Authorization')
@@ -28,18 +28,14 @@ function AuthMiddleware(req: Request, _res: Response, next: NextFunction) {
 		if (tokenType && tokenType !== 'bearer') return handleUnauthorizedError(next)
 		// No Token Provided.
 		if (!token) return handleUnauthorizedError(next)
+		token = token.toString()
+		const decoded = jwt.verify(token, appConfig.tokenSecret, {
+			issuer: appConfig.name as unknown as string,
+			subject: 'authToken',
+		}) as payloadType
 
-		const decoded = jwt.verify(
-			token,
-			appConfig.tokenSecret as unknown as string,
-			{
-				issuer: appConfig.name as unknown as string,
-				subject: 'authToken',
-			},
-		)
 		if (decoded) {
-			;(req as AppRequest).user = { decoded }
-			// req.user.id = decode
+			req.user = { id: decoded.user, role: decoded.type || 'user' }
 			next()
 		} else {
 			// Failed to authenticate user.

@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import { dbQuery } from '../database'
 import appConfig from '../config/dotenvConfig'
 import Model from './Model'
-import User from '../types/user.type'
+import { User, payloadType } from '../types'
 
 class UserModel extends Model {
 	// hashing password
@@ -15,27 +15,23 @@ class UserModel extends Model {
 	}
 
 	// Generate Access Token when user login success
-	generateAccessToken(userId: string) {
-		return jwt.sign({ userId }, appConfig.tokenSecret as unknown as string, {
+	generateAccessToken(payload: payloadType) {
+		return jwt.sign(payload, appConfig.tokenSecret, {
 			expiresIn: appConfig.tokenExpires,
-			issuer: appConfig.name as unknown as string,
+			issuer: appConfig.name,
 			subject: 'authToken',
 			algorithm: 'HS256',
 		})
 	}
 
 	// Generate Refresh Access Token to use it for renew expired token
-	refreshAccessToken(userId: string) {
-		return jwt.sign(
-			{ userId },
-			appConfig.tokenSecretRefresh as unknown as string,
-			{
-				expiresIn: appConfig.tokenExpires,
-				issuer: appConfig.name as unknown as string,
-				subject: 'refreshToken',
-				algorithm: 'HS256',
-			},
-		)
+	refreshAccessToken(payload: payloadType) {
+		return jwt.sign(payload, appConfig.tokenSecretRefresh, {
+			expiresIn: appConfig.tokenExpires,
+			issuer: appConfig.name,
+			subject: 'refreshToken',
+			algorithm: 'HS256',
+		})
 	}
 
 	// get all users
@@ -125,7 +121,7 @@ class UserModel extends Model {
 		try {
 			const sqlQuery = 'SELECT password FROM users WHERE email=$1'
 			const result = await dbQuery(sqlQuery, [email])
-			if (result.length) {
+			if (result.length > 0) {
 				const { password: hashPassword } = result[0]
 				const isPasswordValid = bcrypt.compareSync(
 					`${password}${appConfig.bcryptHash}`,
