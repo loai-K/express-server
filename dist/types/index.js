@@ -17,4 +17,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./data.type"), exports);
 __exportStar(require("./user.type"), exports);
 __exportStar(require("./response.type"), exports);
+__exportStar(require("./payload.type"), exports);
 //# sourceMappingURL=index.js.map

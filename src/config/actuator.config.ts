@@ -1,5 +1,6 @@
 import actuator, { Options } from 'express-actuator'
 import { mainData } from '../controllers'
+import appConfig from '../config/dotenvConfig'
 
 const actuatorOptions: Options = {
 	basePath: '', // It will set /management/info instead of /info
@@ -8,9 +9,9 @@ const actuatorOptions: Options = {
 	infoBuildOptions: {
 		'server': {
 			'health': process.connected,
-			'path': process.title,
-			'platform': process.platform,
-			'node': process.version,
+			'path': appConfig.isProduction ? 'system' : process.title,
+			'platform': appConfig.isProduction ? 'os' : process.platform,
+			'node': appConfig.isProduction ? '0.0.0' : process.version,
 			'pid': process.pid,
 			'uptime': process.uptime()
 		},

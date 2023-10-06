@@ -1,9 +1,9 @@
 import Model from './Model';
-import User from '../types/user.type';
+import { User, payloadType } from '../types';
 declare class UserModel extends Model {
     hashPassword(password: string): string;
-    generateAccessToken(userId: string): string;
-    refreshAccessToken(userId: string): string;
+    generateAccessToken(payload: payloadType): string;
+    refreshAccessToken(payload: payloadType): string;
     findAll(page?: number, perPage?: number): Promise<User[]>;
     find(id: string): Promise<User>;
     create(user: User): Promise<User>;

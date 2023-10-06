@@ -4,13 +4,14 @@ export declare const appConfig: {
     port: number;
     path: string;
     environment: string;
+    isProduction: boolean;
     logState: string | boolean;
-    cookieSecret: string | undefined;
-    bcryptHash: string | undefined;
+    cookieSecret: string;
+    bcryptHash: string;
     saltRounds: number;
-    tokenSecret: string | undefined;
-    tokenSecretRefresh: string | undefined;
-    tokenExpires: string | undefined;
+    tokenSecret: string;
+    tokenSecretRefresh: string;
+    tokenExpires: string;
     database: {
         host: string | undefined;
         port: number;

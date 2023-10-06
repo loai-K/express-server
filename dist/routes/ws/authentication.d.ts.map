@@ -1,0 +1,1 @@
+{"version":3,"file":"authentication.d.ts","sourceRoot":"","sources":["../../../src/routes/ws/authentication.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,MAAM,SAAS,CAAA;AACjC,OAAO,EAAE,SAAS,EAAE,MAAM,IAAI,CAAA;AAS9B,QAAA,MAAM,cAAc,OAAQ,SAAS,OAAO,OAAO,SAsBlD,CAAA;AAED,eAAe,cAAc,CAAA"}

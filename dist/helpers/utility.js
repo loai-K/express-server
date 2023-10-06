@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.stringPrototypes = exports.getAppPath = exports.hashString = void 0;
+exports.stringPrototypes = exports.checkProperties = exports.getAppPath = exports.hashString = void 0;
 const crypto_1 = __importDefault(require("crypto"));
 const promises_1 = require("node:fs/promises");
 const hashString = (text) => {
@@ -14,6 +14,15 @@ async function getAppPath() {
     return await (0, promises_1.realpath)('./');
 }
 exports.getAppPath = getAppPath;
+function checkProperties(obj) {
+    let key;
+    for (key in obj) {
+        if (obj[key] !== null && obj[key] != '')
+            return false;
+    }
+    return true;
+}
+exports.checkProperties = checkProperties;
 exports.stringPrototypes = {
     slugify(separator = '-') {
         return this.toString()

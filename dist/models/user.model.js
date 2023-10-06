@@ -12,16 +12,16 @@ class UserModel extends Model_1.default {
     hashPassword(password) {
         return bcrypt_1.default.hashSync(`${password}${dotenvConfig_1.default.bcryptHash}`, dotenvConfig_1.default.saltRounds);
     }
-    generateAccessToken(userId) {
-        return jsonwebtoken_1.default.sign({ userId }, dotenvConfig_1.default.tokenSecret, {
+    generateAccessToken(payload) {
+        return jsonwebtoken_1.default.sign(payload, dotenvConfig_1.default.tokenSecret, {
             expiresIn: dotenvConfig_1.default.tokenExpires,
             issuer: dotenvConfig_1.default.name,
             subject: 'authToken',
             algorithm: 'HS256',
         });
     }
-    refreshAccessToken(userId) {
-        return jsonwebtoken_1.default.sign({ userId }, dotenvConfig_1.default.tokenSecretRefresh, {
+    refreshAccessToken(payload) {
+        return jsonwebtoken_1.default.sign(payload, dotenvConfig_1.default.tokenSecretRefresh, {
             expiresIn: dotenvConfig_1.default.tokenExpires,
             issuer: dotenvConfig_1.default.name,
             subject: 'refreshToken',
@@ -100,7 +100,7 @@ class UserModel extends Model_1.default {
         try {
             const sqlQuery = 'SELECT password FROM users WHERE email=$1';
             const result = await (0, database_1.dbQuery)(sqlQuery, [email]);
-            if (result.length) {
+            if (result.length > 0) {
                 const { password: hashPassword } = result[0];
                 const isPasswordValid = bcrypt_1.default.compareSync(`${password}${dotenvConfig_1.default.bcryptHash}`, hashPassword);
                 if (isPasswordValid) {

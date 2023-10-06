@@ -22,12 +22,13 @@ function AuthMiddleware(req, _res, next) {
             return handleUnauthorizedError(next);
         if (!token)
             return handleUnauthorizedError(next);
+        token = token.toString();
         const decoded = jsonwebtoken_1.default.verify(token, dotenvConfig_1.default.tokenSecret, {
             issuer: dotenvConfig_1.default.name,
             subject: 'authToken',
         });
         if (decoded) {
-            req.user = { id: decoded.toString() };
+            req.user = { id: decoded.user, role: decoded.type || 'user' };
             next();
         }
         else {
