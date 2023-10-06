@@ -63,5 +63,8 @@ __Proxy Routes
 
 > /proxy/photos
 
+__WebSocket Route
+> ws://localhost:3000/ws
+
 ---
 By: [Loai Kanou](https://github.com/loai-k)
