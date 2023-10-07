@@ -2,7 +2,7 @@ import nodemailer, { Transporter, createTestAccount } from 'nodemailer'
 import { Mail } from '../interfaces'
 import { appConfig, mailConfig } from '../config'
 
-export default class MailService {
+class MailService {
 	private static instance: MailService
 	private transporter: Transporter | undefined
 
@@ -68,3 +68,5 @@ export default class MailService {
 		return this.transporter
 	}
 }
+
+export default MailService

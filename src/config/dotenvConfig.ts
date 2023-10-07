@@ -30,6 +30,11 @@ export const appConfig = {
 		from: process.env.EMAIL_FROM,
 		name: process.env.EMAIL_FROM_NAME,
 	},
+	twilio: {
+		number: process.env.TWILIO_NUMBER as string,
+		sid: process.env.TWILIO_SID as string,
+		authToken: process.env.TWILIO_TOKEN as string,
+	},
 }
 
 export default appConfig

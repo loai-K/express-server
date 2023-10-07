@@ -33,6 +33,7 @@ class OtpModel extends Model {
 	}
 
 	validateExpiration(data: Date): boolean {
+		// Date.parse(data.toString()) < Date.parse(Date.now().toString())
 		return new Date(data) < new Date()
 	}
 
